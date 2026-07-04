@@ -46,6 +46,12 @@ def test_gromacs_availability(gmx_bin='gmx',
     else:
         print("WARNING: Could not determine GROMACS version")
 
+test_gromacs_availability.__doc__=f"""
+    Input:
+    - gmx_bin ('gmx'): Path to GROMACS binary file;
+    - oldest_gmx_ver ({OLDEST_GMX_VER}): Oldest GROMACS version compatible with the library.
+    """
+
 
 def run_x2top(gro_file, 
               ff_folder, 
@@ -64,6 +70,16 @@ def run_x2top(gro_file,
     
     cmd = f"{gmx_bin} x2top -f {gro_file} -ff {ff_folder_stem} -name {name} -o {top_file} {flags}"
     os.system(cmd)
+
+run_x2top.__doc__=f"""
+    Input:
+    - gro_file: GROMACS configuration file (.gro) with molecular coordinates;
+    - ff_folder: Folder containing interatomic potential definitions;
+    - name (None): Name of the molecule in the output .top file (default name: conf. file without extension);
+    - top_file (None): Name of the output .top file (default name: conf. file with .top extension);
+    - flags (""): Any additional flag to pass to 'gmx x2top';
+    - gmx_bin ('gmx'): Path to GROMACS binary file.
+    """
 
 
 def select_top_lines(top_file):
@@ -158,10 +174,18 @@ def create_itp(top_file,
     with open(itp_file, 'w') as f:
         f.writelines(itp_lines)
 
+create_itp.__doc__ = f"""
+    Input:
+    - top_file: Topology file (.top) of the molecule;
+    - charge_list_file (None): List of partial charges for each atom in the molecule (.txt);
+    - itp_file: Output .itp file (default name: .top file with .itp extension).
+    """
+
 
 def run_insert_molecules(gro_file_f,
                          gro_file_ci,
-                         nmol, flags="",
+                         nmol, 
+                         flags="",
                          gro_file_out=None,
                          gmx_bin='gmx'):
 
@@ -190,6 +214,18 @@ def run_insert_molecules(gro_file_f,
         raise RuntimeError("Could not parse molecule count from GROMACS output.")
 
     return n_added_mol
+
+run_insert_molecules.__doc__ = f"""
+    Input:
+    - gro_file_f: GROMACS .gro file for the substrate/surface;
+    - gro_file_ci: GROMACS .gro file for the solvant;
+    - nmol: Number of solvant molecules to insert;
+    - flags (""): Any additional flag to pass to "gmx insert-molecules";
+    - gro_file_out (None): Output configuration file (default name: combine solvant and substrate with .gro extension)
+    - gmx_bin ('gmx'): Path to GROMACS binary file.
+    Output:
+    - n_added_mol: number of solvane molecules added to the configuration.
+    """
 
 
 def extract_moleculetype_name(filepath):
@@ -235,6 +271,17 @@ def compile_topology(n_sol,
         fo.write( """[ molecules ]\n""")
         fo.write(f"""{mol_name_sub} {n_sub}\n""")
         fo.write(f"""{mol_name_sol} {n_sol}\n""")
+
+compile_topology.__doc__ = f"""
+    Input:
+    - n_sol: No. of solvant molecules;
+    - n_sub: No. of substrate/surface molecules;
+    - nb_itp: Path to non-bonded interactions ff file;
+    - sol_itp: Topology of solvant molecule;
+    - sub_snippet: Header of substrate topology (e.g. [ atomtypes ], ..., [ position_restraints ], ...);
+    - output_top ("topology-biphase.top"): ...;
+    - system_name ("Biphase"): ....
+    """
 
 
 if __name__=="__main__":
