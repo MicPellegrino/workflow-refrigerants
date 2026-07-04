@@ -1,0 +1,27 @@
+[ atomtypes ]
+; name  at.num   mass     charge  ptype    sigma       epsilon
+; Zirconium atoms (A, original)
+  ZR    40       91.22    0.7952  A        0.6227      0.00012
+; Oxygen atoms (A)
+  ZO  	8        15.9994 -0.3976  A        0.2653      1.16516
+
+[ nonbond_params ]
+ZR	ZO	  1	  0.0	     0.0
+ZO	ZO	  1	  0.0	     0.0
+ZR	ZR	  1	  0.0	     0.0
+
+[ moleculetype ]
+; Name        nrexcl
+ZrO2          0
+
+[ atoms ]
+; id  attype resnr  residue  atname  cgnr   charge      mass      
+  1   ZR     1      ZrO2     ZR      1      0.7952      91.22     
+  2   ZO     1      ZrO2     ZO      1     -0.3976      15.9994   
+  3   ZO     1      ZrO2     ZO      1     -0.3976      15.9994
+
+[ position_restraints ]
+  1  1  100000  100000  100000
+  2  1  100000  100000  100000
+  3  1  100000  100000  100000
+  
