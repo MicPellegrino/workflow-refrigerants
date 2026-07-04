@@ -244,7 +244,7 @@ def extract_moleculetype_name(filepath):
 
 def compile_topology(n_sol,
                      n_sub,
-                     nb_itp,
+                     ff_itp,
                      sol_itp,
                      sub_snippet,
                      output_top="topology-biphase.top",
@@ -276,7 +276,7 @@ compile_topology.__doc__ = f"""
     Input:
     - n_sol: No. of solvant molecules;
     - n_sub: No. of substrate/surface molecules;
-    - nb_itp: Path to non-bonded interactions ff file;
+    - ff_itp: Path to ff file (header with [ defaults ] definition);
     - sol_itp: Topology of solvant molecule;
     - sub_snippet: Header of substrate topology (e.g. [ atomtypes ], ..., [ position_restraints ], ...);
     - output_top ("topology-biphase.top"): ...;
