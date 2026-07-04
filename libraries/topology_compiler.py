@@ -254,10 +254,10 @@ def compile_topology(n_sol,
     mol_name_sub = extract_moleculetype_name(sub_snippet)
 
     sol_itp_path = os.path.realpath(os.path.abspath(os.path.expanduser(sol_itp)))
-    np_itp_path = os.path.realpath(os.path.abspath(os.path.expanduser(nb_itp)))
+    ff_itp_path = os.path.realpath(os.path.abspath(os.path.expanduser(ff_itp)))
 
     with open(output_top, 'w') as fo:
-        fo.write(f"""#include "{np_itp_path}" \n""")
+        fo.write(f"""#include "{ff_itp_path}" \n""")
         fo.write( """\n""")
         with open(sub_snippet, 'r') as fi:
             sub_snippet_lines = fi.read()
