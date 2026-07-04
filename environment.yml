@@ -1,0 +1,23 @@
+name: refrigerants
+
+channels:
+
+  - conda-forge
+
+  # Probably not necessary, but good to have for MACE.
+  # - nvidia
+  # - pytorch
+
+dependencies:
+
+  # MACE and LAMMPS won't work with python<3.10.
+  - python==3.11
+
+  # Jupyer notebook and typical python tools:
+  - notebook=6.5.5
+  - matplotlib
+  - numpy
+
+  # Visualization and analysis of MD trajectories:
+  - nglview
+  - mdanalysis
