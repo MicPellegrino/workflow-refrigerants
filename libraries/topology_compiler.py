@@ -63,6 +63,11 @@ def run_x2top(gro_file,
     assert gro_file.split(".")[-1]=='gro', "Please provide a '.gro' file as input configuration!"
 
     ff_folder_stem = ff_folder[:-3] if ff_folder.endswith('.ff') else ff_folder
+
+    # BUG!
+    # Test the case where the input file is in "../<folder>"!
+    # This affect all other calls to .join(...)
+
     if name == None :
         name = ''.join(gro_file.split(".")[:-1])
     if top_file == None :
