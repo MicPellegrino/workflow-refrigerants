@@ -56,17 +56,19 @@ def solvate_empty_box(input_solvant,
 
 # TODO: check if this works on a generic .gro file
 def parse_atom_line(line):
-    
+
+    resname = line[5:10].strip()
     x = float(line[20:28])
     y = float(line[28:36])
     z = float(line[36:44])
     
-    return x, y, z
+    return x, y, z, resname
 
 
 def carve_gro(input_file,
               atoms_per_molecule,
               carve_condition,
+              mol_type='UNK',
               output_file=None):
 
     # TODO: assertions and deal with case output_file==None
@@ -79,41 +81,40 @@ def carve_gro(input_file,
     atom_lines = lines[2:2 + n_atoms]
     box_line = lines[2 + n_atoms:]
  
-    if n_atoms % atoms_per_molecule != 0:
-        raise ValueError(
-            f"Total atoms ({n_atoms}) is not a multiple of "
-            f"atoms_per_molecule ({atoms_per_molecule})."
-        )
- 
     kept_lines = []
  
-    for i in range(0, n_atoms, atoms_per_molecule):
-        molecule_lines = atom_lines[i:i + atoms_per_molecule]
+    i = 0
+    while i<n_atoms :
+
+        # for i in range(0, n_atoms, atoms_per_molecule):
+        x, y, z, resname = parse_atom_line(atom_lines[i])
+
+        if resname != mol_type :
+            kept_lines.append(atom_lines[i])
+            i = i+1
+
+        else :
+            molecule_lines = atom_lines[i:i + atoms_per_molecule]
  
-        passes = True
-        for line in molecule_lines:
-            x, y, z = parse_atom_line(line)
-            if not carve_condition(x, y, z):
-                passes = False
-                break
+            passes = True
+            for line in molecule_lines:
+                x, y, z, resname = parse_atom_line(line)
+                if not carve_condition(x, y, z):
+                    passes = False
+                    break
  
-        if passes:
-            kept_lines.extend(molecule_lines)
+            if passes:
+                kept_lines.extend(molecule_lines)
+
+            i += atoms_per_molecule
+
+    print(len(kept_lines))
  
-    # Write output .gro file with updated atom count
     with open(output_file, "w") as f:
         f.write(title)
         f.write(f"{len(kept_lines)}\n")
         f.writelines(kept_lines)
         f.writelines(box_line)
- 
-    n_molecules_total = n_atoms // atoms_per_molecule
-    n_molecules_kept = len(kept_lines) // atoms_per_molecule
-
-    # TODO: change/delete this mess...
-    print(f"Molecules kept: {n_molecules_kept} / {n_molecules_total}")
-    print(f"Atoms kept: {len(kept_lines)} / {n_atoms}")
-    print(f"Output written to: {output_file}")
 
 
 if __name__=="__main__":
