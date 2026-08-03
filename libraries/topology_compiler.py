@@ -64,15 +64,13 @@ def run_x2top(gro_file,
 
     ff_folder_stem = ff_folder[:-3] if ff_folder.endswith('.ff') else ff_folder
 
-    # BUG!
-    # Test the case where the input file is in "../<folder>"!
-    # This affect all other calls to .join(...)
-
+    gro_file_nopath = gro_file.split('/')[-1]
     if name == None :
-        name = ''.join(gro_file.split(".")[:-1])
+        name = ''.join(gro_file_nopath.split(".")[:-1])
     if top_file == None :
-        top_file = ''.join(gro_file.split(".")[:-1])+".top"
+        top_file = ''.join(gro_file_nopath.split(".")[:-1])+".top"
     
+    # By default, output in the folder WHERE THE COMMAND IS CALLED
     cmd = f"{gmx_bin} x2top -f {gro_file} -ff {ff_folder_stem} -name {name} -o {top_file} {flags}"
     os.system(cmd)
 
@@ -153,8 +151,10 @@ def fix_topology_file(topology_file,
         result.append(line)
 
     extension = topology_file.split(".")[-1]
-    topology_file_fixed = ''.join(topology_file.split(".")[:-1])+"-fixed."+extension
+    topology_file_nopath = topology_file.split('/')[-1]
+    topology_file_fixed = ''.join(topology_file_nopath.split(".")[:-1])+"-fixed."+extension
 
+    # Again, by defult output in the folder where the command is called
     with open(topology_file_fixed, 'w') as f:
         f.writelines(result)
 
@@ -174,7 +174,8 @@ def create_itp(top_file,
         itp_lines = select_top_lines(top_file_fixed)
 
     if itp_file == None :
-        itp_file = ''.join(top_file.split(".")[:-1])+".itp"
+        top_file_nofolder = top_file.split('/')[-1]
+        itp_file = ''.join(top_file_nofolder.split(".")[:-1])+".itp"
 
     with open(itp_file, 'w') as f:
         f.writelines(itp_lines)
@@ -198,7 +199,9 @@ def run_insert_molecules(gro_file_f,
     assert gro_file_ci.split(".")[-1]=='gro', "ERROR: Please provide a '.gro' file as input solvant!"
 
     if gro_file_out==None :
-        gro_file_out = ''.join(gro_file_f.split(".")[:-1])+"-"+''.join(gro_file_ci.split(".")[:-1])+".gro"
+        gro_file_f_nofolder = gro_file_f.split('/')[-1]
+        gro_file_ci_nofolder = gro_file_ci.split('/')[-1]
+        gro_file_out = ''.join(gro_file_f_nofolder.split(".")[:-1])+"-"+''.join(gro_file_ci_nofolder.split(".")[:-1])+".gro"
 
     cmd = f"{gmx_bin} insert-molecules -f {gro_file_f} -ci {gro_file_ci} -nmol {nmol} -o {gro_file_out} {flags}"
     stderr_lines = []

@@ -108,7 +108,7 @@ def carve_gro(input_file,
 
             i += atoms_per_molecule
 
-    print(len(kept_lines))
+    print("Total number of new atoms:",len(kept_lines))
  
     with open(output_file, "w") as f:
         f.write(title)
