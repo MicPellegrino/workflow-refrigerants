@@ -19,10 +19,10 @@ def extend_substrate(input_file,
                      gmx_bin='gmx'):
 
     assert input_file.split(".")[-1]=='gro', "ERROR: Please provide a '.gro' file as input configuration!"
-
-    # BUG
+    
     if output_file == None :
-        output_file = ''.join(input_file.split(".")[:-1])+"-ext.gro"
+        input_file_nopath = input_file.split('/')[-1]
+        output_file = ''.join(input_file_nopath.split(".")[:-1])+"-ext.gro"
 
     cmd = f"{gmx_bin} genconf -nbox {nx} {ny} {nz} -f {input_file} -o {output_file} {flags}"
     os.system(cmd)
@@ -58,7 +58,12 @@ def carve_gro(input_file,
               mol_type='UNK',
               output_file=None):
 
-    # TODO: assertions and deal with case output_file==None
+    # TODO: assertions, carve_condition needs to be function/lambda that takes three coordinates
+    #       as input and returns a boolean (x,y,z->True/False)
+
+    if output_file == None :
+        input_file_nopath = input_file.split('/')[-1]
+        output_file = ''.join(input_file_nopath.split(".")[:-1])+"-carved.gro"
 
     with open(input_file, "r") as f:
         lines = f.readlines()
@@ -106,6 +111,8 @@ def carve_gro(input_file,
 
 if __name__=="__main__":
 
+    # TODO: trasform this in a notebook
+
     lx_0 = 5.26800
     nbox_x = 10
     R0 = 0.5*(nbox_x*lx_0)-5.0
@@ -123,7 +130,7 @@ if __name__=="__main__":
     n_atom_per_mol = 9
     carve_gro("../example-droplet/solvated.gro",n_atom_per_mol,carve_condition,output_file="../example-droplet/carved.gro")
 
-    # TODO: Insert molecules to fill the vapour phase
+    # TODO: Insert molecules to fill the vapour phase...
 
     zupp = 12.5
     zlow = 1.5
