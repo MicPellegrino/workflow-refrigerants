@@ -3,25 +3,11 @@ import subprocess
 import re
 import numpy as np
 
-# TODO: these variables should be defined in a separate library
-
-# Ugly but necessary...
-EPS_MACHINE = np.finfo(float).eps
-
-# Oldest admissible GMX version
-OLDEST_GMX_VER = 2024
-
-# No. lines to keep when running 'insert-molecules'
-END_LINES_BUFFER = 20
-
-# Conversion kg/m^3 -> u/nm^3
-DENSITY_SI_2_GMX = 0.602214
+from global_setup import *
 
 # NB: theta_0 is in radians!
 FUN_AREA = lambda theta_0, R_0 : R_0*R_0*(theta_0/(np.sin(theta_0)**2)-1.0/np.tan(theta_0))
 FUN_RADIUS = lambda theta_0, R_0 : np.sqrt(FUN_AREA(theta_0,R_0)/np.pi)
-
-# TODO: test_gromacs_availability() in topolgy_compiler.py should be a global function
 
 def extend_substrate(input_file,
                      nx,
