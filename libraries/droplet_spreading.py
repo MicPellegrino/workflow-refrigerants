@@ -5,6 +5,7 @@ import numpy as np
 
 from global_setup import *
 
+
 # NB: theta_0 is in radians!
 FUN_AREA = lambda theta_0, R_0 : R_0*R_0*(theta_0/(np.sin(theta_0)**2)-1.0/np.tan(theta_0))
 FUN_RADIUS = lambda theta_0, R_0 : np.sqrt(FUN_AREA(theta_0,R_0)/np.pi)

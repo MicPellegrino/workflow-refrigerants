@@ -1,3 +1,8 @@
+import os
+import subprocess
+import re
+import numpy as np
+
 # Ugly but necessary...
 EPS_MACHINE = np.finfo(float).eps
 
