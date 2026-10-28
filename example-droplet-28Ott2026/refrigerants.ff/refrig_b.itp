@@ -1,0 +1,51 @@
+; values for refrigerants R1233zd(E) and R1234ze(E)
+
+; References: 
+; G. Raabe, J. Phys. Chem. B 116 (2012) 5744-5751.
+; G. Raabe, J. Chem. Eng. Data 60 (2015) 2412-2419.
+
+[ bondtypes ]					
+; i j    func b0 (nm)   kb (kJ mol^-1 nm^-2)	
+					
+CM  CM   1    0.1331    566338	
+CM  CT   1    0.1511    265768	
+CT  FCT  1    0.1353    308922	
+CM  HC   1    0.1086    325414	
+CM  H1   1    0.1086    325414	
+CM  FCM  1    0.133     372946	
+CM  Cl   1    0.1734    190760	
+
+
+; [ constrainttypes ]
+
+
+[ angletypes ]							
+; i j   k      func   th0 (deg)  cth (kJ mol^-1 rad^-2)		
+							
+HC  CM  CM     1      120.6      304.18		
+H1  CM  CM     1      120.6      304.18		
+FCT CT  FCT    1      107.5      735.22		
+CM  CT  FCT    1      111.3      626.34		
+HC  CM  CT     1      115.1      270.54		
+HC  CM  HC     1      118.7      245.26		
+CM  CM  FCM    1      122.6      422.76		
+FCM CM  FCM    1      112.6      714.46		
+FCM CM  CT     1      112.5      639.14		
+CM  CM  CT     1      124.1      419.4		
+H1  CM  FCM    1      113.7      428.72		
+Cl  CM  CM     1      122.95     561.6		
+Cl  CM  H1     1      113.8      305.2		
+
+
+[ dihedraltypes ]
+; i j  k  l     func      phi (deg) k (kJ/mol) n (-)
+							
+H1  CM CM HC    1         0         27.84      1
+FCM CM CM CT    1         0         27.84      1
+H1  CM CM CT    1         180       27.84      1
+FCM CM CM HC    1         180       27.84      1
+HC  CM CT FCT   1         0         0.745      3
+H1  CM CT FCT   1         0         0.745      3
+CM  CM CT FCT   1         180       0.5951     3
+Cl  CM CM HC    1         180       27.84      1
+Cl  CM CM CT    1         0         27.84      1

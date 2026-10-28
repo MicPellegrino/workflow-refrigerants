@@ -1,0 +1,60 @@
+integrator               = md
+dt                       = 0.001000
+
+nsteps			 = 1000000 
+nstxout                  = 10000
+nstvout                  = 10000
+nstlog                   = 5000
+nstenergy                = 5000
+
+pbc                      = xy
+nwall                    = 2
+
+wall-atomtype            = wall_01 wall_01
+wall-type                = 12-6
+wall-r-linpot            = 0.10
+wall-ewald-zfac          = 2
+
+nstlist                  = 10
+
+ns-type                  = grid
+rlist                    = 1.000000
+cutoff-scheme            = verlet
+
+coulombtype              = PME
+fourierspacing           = 0.150000
+pme-order                = 5
+ewald-rtol               = 1.000000e-05
+rcoulomb                 = 1.000000
+ewald-geometry		     = 3dc
+
+vdw-type                 = Cut-off
+rvdw                     = 1.000000
+DispCorr                 = EnerPres
+tcoupl                   = v-rescale
+tc-grps                  = ZrO2 UNK
+tau-t                    = 1.0  1.0
+ref-t                    = 300  300
+pcoupl                   = no
+pcoupltype               = semiisotropic
+tau-p                    = -1.0
+compressibility          = 0.0 4.5e-5
+ref-p                    = 1.0 1.0
+
+gen-vel                  = yes
+gen-temp                 = 300
+gen-seed                 = 2376429
+
+flow-field               = yes
+flow-field-grps          = UNK
+flow-nstsample           = 1
+flow-nstoutput           = 1000
+flow-nx                  = 395;132
+flow-nz                  = 145;73
+
+
+
+; freezegrps		     = ZrO2
+; freezedim		         = Y Y Y
+
+constraints              = h-bonds
